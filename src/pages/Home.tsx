@@ -35,7 +35,7 @@ export default function Home() {
           }}
           className="relative z-10 text-center px-6"
         >
-          <h1 className="text-5xl md:text-7xl font-light text-white mb-6 text-balance">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white mb-6 text-balance">
             L'Excellence à Chaque Instant
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 mb-8 font-light max-w-2xl mx-auto">
@@ -93,7 +93,7 @@ export default function Home() {
             {/* Left Column: Title & Info */}
             <Reveal width="100%" direction="right">
               <div>
-                <h2 className="text-6xl md:text-8xl font-serif text-foreground mb-8 text-balance">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-foreground mb-8 text-balance">
                   NOS <br /> <span className="text-primary/80">HORAIRES</span>
                 </h2>
                 <div className="space-y-4 text-muted-foreground font-light text-lg">
