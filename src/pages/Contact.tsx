@@ -30,10 +30,15 @@ export default function Contact() {
                     <MapPin className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div>
                       <h3 className="font-medium mb-1 text-foreground">Adresse</h3>
-                      <p className="text-muted-foreground font-light">
-                        123 Rue Premium<br />
-                        75001 Paris, France
-                      </p>
+                      <a 
+                        href="https://www.google.com/maps/search/Restaurant+Oran+Algerie/@35.6976541,-0.6337376,13z" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground font-light hover:text-primary transition-colors cursor-pointer"
+                      >
+                        Oran, Algérie<br />
+                        Cliquez pour voir sur Google Maps
+                      </a>
                     </div>
                   </Card>
 
@@ -41,8 +46,8 @@ export default function Contact() {
                     <Phone className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div>
                       <h3 className="font-medium mb-1 text-foreground">Téléphone</h3>
-                      <a href="tel:+33123456789" className="text-muted-foreground font-light hover:text-primary transition-colors">
-                        +33 1 23 45 67 89
+                      <a href="tel:+213556482798" className="text-muted-foreground font-light hover:text-primary transition-colors">
+                        0556 48 27 98
                       </a>
                     </div>
                   </Card>
@@ -51,8 +56,8 @@ export default function Contact() {
                     <Mail className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div>
                       <h3 className="font-medium mb-1 text-foreground">Email</h3>
-                      <a href="mailto:contact@premium.fr" className="text-muted-foreground font-light hover:text-primary transition-colors">
-                        contact@premium.fr
+                      <a href="mailto:yacinemed2020@gmail.com" className="text-muted-foreground font-light hover:text-primary transition-colors">
+                        yacinemed2020@gmail.com
                       </a>
                     </div>
                   </Card>
@@ -74,7 +79,7 @@ export default function Contact() {
                   <Button
                     size="lg"
                     className="w-full"
-                    onClick={() => window.open('https://wa.me/33123456789', '_blank')}
+                    onClick={() => window.open('https://wa.me/213556482798', '_blank')}
                   >
                     <MessageCircle className="mr-2 h-5 w-5" />
                     Nous contacter sur WhatsApp
@@ -134,8 +139,33 @@ export default function Contact() {
             <Card className="animate-fade-in bg-background/50 backdrop-blur-sm">
               <h2 className="text-3xl font-light mb-6 text-foreground">Envoyez-nous un message</h2>
               
-              <form name="contact" method="POST" data-netlify="true" className="space-y-6">
-                <input type="hidden" name="form-name" value="contact" />
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                const data = {
+                  name: formData.get('name'),
+                  email: formData.get('email'),
+                  phone: formData.get('phone'),
+                  message: formData.get('message'),
+                };
+
+                try {
+                  const response = await fetch('/.netlify/functions/send-contact-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                  });
+
+                  if (response.ok) {
+                    alert('Message envoyé avec succès ! Nous vous répondrons bientôt.');
+                    e.currentTarget.reset();
+                  } else {
+                    throw new Error('Erreur lors de l\'envoi');
+                  }
+                } catch (error) {
+                  alert('Erreur lors de l\'envoi du message. Veuillez réessayer.');
+                }
+              }} className="space-y-6">
                 
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2 text-foreground">
@@ -174,7 +204,7 @@ export default function Contact() {
                     id="phone"
                     name="phone"
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background/70 focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
-                    placeholder="+33 1 23 45 67 89"
+                    placeholder="+213 5 56 48 27 98"
                   />
                 </div>
 
@@ -206,7 +236,7 @@ export default function Contact() {
         <div className="container-width px-6">
           <div className="rounded-xl overflow-hidden shadow-xl animate-scale-in">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9914406081493!2d2.3382897!3d48.8606111!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sLouvre%20Museum!5e0!3m2!1sen!2sfr!4v1234567890123!5m2!1sen!2sfr"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102993.38509713726!2d-0.7073376!3d35.6976541!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd7e8a6a28d6c5b1%3A0x4ba4c50274f4e4b!2sOran%2C%20Algeria!5e0!3m2!1sen!2sdz!4v1234567890123!5m2!1sen!2sdz"
               width="100%"
               height="500"
               style={{ border: 0 }}
