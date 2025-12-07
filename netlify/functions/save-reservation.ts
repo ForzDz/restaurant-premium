@@ -24,6 +24,18 @@ export const handler: Handler = async (event) => {
       };
     }
 
+    // Check if environment variables are set
+    if (!process.env.GOOGLE_SHEETS_CLIENT_EMAIL || !process.env.GOOGLE_SHEETS_PRIVATE_KEY) {
+      console.error('Missing environment variables');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ 
+          error: 'Configuration manquante',
+          details: 'Les variables d\'environnement ne sont pas configurées'
+        }),
+      };
+    }
+
     // Set up Google Sheets API
     const auth = new google.auth.GoogleAuth({
       credentials: {
@@ -42,15 +54,32 @@ export const handler: Handler = async (event) => {
 
     const values = [[date, time, name, email, phone, guests, submissionDate]];
 
-    // Append to sheet
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: SHEET_ID,
-      range: 'Feuille 1!A:G', // Adjust if your sheet has a different name
-      valueInputOption: 'USER_ENTERED',
-      requestBody: {
-        values,
-      },
-    });
+    // Try different sheet names
+    const sheetNames = ['Feuille 1', 'Sheet1', 'Feuille1'];
+    let success = false;
+    let lastError = null;
+
+    for (const sheetName of sheetNames) {
+      try {
+        await sheets.spreadsheets.values.append({
+          spreadsheetId: SHEET_ID,
+          range: `${sheetName}!A:G`,
+          valueInputOption: 'USER_ENTERED',
+          requestBody: {
+            values,
+          },
+        });
+        success = true;
+        break;
+      } catch (err) {
+        lastError = err;
+        continue;
+      }
+    }
+
+    if (!success) {
+      throw lastError;
+    }
 
     return {
       statusCode: 200,
