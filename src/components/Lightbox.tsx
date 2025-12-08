@@ -31,18 +31,18 @@ export function Lightbox({ images, currentIndex, onClose, onPrevious, onNext }: 
       {/* Close Button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
-        aria-label="Close lightbox"
+        className="absolute top-4 right-4 z-10 p-3 md:p-2 text-white bg-black/50 hover:bg-black/70 rounded-full md:rounded-lg transition-all h-12 w-12 md:h-auto md:w-auto flex items-center justify-center"
+        aria-label="Fermer"
       >
-        <X className="h-6 w-6" />
+        <X className="h-7 w-7 md:h-6 md:w-6" />
       </button>
 
       {/* Previous Button */}
       {images.length > 1 && (
         <button
           onClick={onPrevious}
-          className="absolute left-4 p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
-          aria-label="Previous image"
+          className="absolute left-2 md:left-4 p-3 md:p-2 text-white bg-black/50 hover:bg-black/70 rounded-full md:rounded-lg transition-all h-12 w-12 md:h-auto md:w-auto flex items-center justify-center"
+          aria-label="Image précédente"
         >
           <ChevronLeft className="h-8 w-8" />
         </button>
@@ -61,8 +61,8 @@ export function Lightbox({ images, currentIndex, onClose, onPrevious, onNext }: 
       {images.length > 1 && (
         <button
           onClick={onNext}
-          className="absolute right-4 p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
-          aria-label="Next image"
+          className="absolute right-2 md:right-4 p-3 md:p-2 text-white bg-black/50 hover:bg-black/70 rounded-full md:rounded-lg transition-all h-12 w-12 md:h-auto md:w-auto flex items-center justify-center"
+          aria-label="Image suivante"
         >
           <ChevronRight className="h-8 w-8" />
         </button>
