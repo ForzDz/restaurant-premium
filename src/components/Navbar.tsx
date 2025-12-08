@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { cn } from '@/lib/utils';
+import logo from '../assets/logo.png';
 
 const navLinks = [
   { to: '/', label: 'Accueil' },
@@ -59,12 +60,13 @@ export function Navbar() {
       isVisible ? "translate-y-0" : "-translate-y-full"
     )}>
       <div className="container-width px-6">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-22">
           <Link to="/" className={cn(
-            "text-xl font-semibold tracking-tight transition-colors",
+            "flex items-center gap-3 text-xl font-semibold tracking-tight transition-colors",
             isTransparent ? "text-white" : "text-foreground"
           )}>
-            Premium
+            <img src={logo} alt="Premium" className="h-16 w-auto object-contain" />
+            <span className="hidden sm:block">Premium & Coffee</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -109,7 +111,7 @@ export function Navbar() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className={cn(
-            "md:hidden py-4 animate-fade-in absolute top-16 left-0 right-0 px-6",
+            "md:hidden py-4 animate-fade-in absolute top-20 left-0 right-0 px-6",
             isTransparent ? "bg-black/90 backdrop-blur-md" : "bg-background border-b border-border"
           )}>
             {navLinks.map((link) => (

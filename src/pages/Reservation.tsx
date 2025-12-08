@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { CalendarIcon, Clock, Users } from 'lucide-react';
+import { CalendarIcon, Clock, Users, CheckCircle2 } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { AuroraBackground } from '@/components/ui/aurora-background';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Reveal } from '@/components/Reveal';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 
@@ -30,6 +31,17 @@ export default function Reservation() {
       toast({
         title: "Erreur",
         description: "Veuillez remplir tous les champs",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Phone qualification
+    const phoneRegex = /^(05|06|07)[0-9]{8}$/;
+    if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+      toast({
+        title: "Numéro de téléphone invalide",
+        description: "Le numéro doit commencer par 05, 06 ou 07 et contenir 10 chiffres (ex: 0556482798)",
         variant: "destructive"
       });
       return;
@@ -81,140 +93,183 @@ export default function Reservation() {
   return (
     <AuroraBackground showRadialGradient={false}>
       {/* Hero */}
-      <section className="section-padding pt-24">
-        <div className="container-width text-center animate-fade-in">
-          <h1 className="text-5xl md:text-6xl font-light mb-6 text-foreground">Réservation</h1>
-          <p className="text-xl text-muted-foreground font-light max-w-3xl mx-auto leading-relaxed">
-            Réservez votre table en quelques clics et profitez d'une expérience culinaire exceptionnelle
-          </p>
+      <section className="section-padding pt-32 pb-16">
+        <div className="container-width text-center">
+          <Reveal width="100%">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif mb-6 text-foreground">
+              Réservation
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground font-light max-w-3xl mx-auto leading-relaxed">
+              Réservez votre table en quelques clics et profitez d'une expérience culinaire exceptionnelle
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* Reservation Form */}
       <section className="section-padding">
         <div className="container-width">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
             {/* Left Panel - Info */}
-            <Card className="bg-background/50 backdrop-blur-sm animate-fade-in p-8">
-              <h2 className="text-2xl font-medium mb-6 text-foreground">Réserver une table</h2>
-              <div className="space-y-4 text-muted-foreground">
-                <div className="flex items-center gap-3">
-                  <Clock className="h-5 w-5 text-primary" />
-                  <span>Durée estimée: 1h30</span>
+            <Reveal delay={0.1}>
+              <Card className="bg-background/60 backdrop-blur-md border border-border/50 p-8 h-full">
+                <h2 className="text-2xl font-serif mb-6 text-foreground">Informations</h2>
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Clock className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold mb-1 text-foreground">Durée estimée</h3>
+                      <p className="text-muted-foreground font-light">1h30</p>
+                    </div>
+                  </div>
+                  {selectedDate && (
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <CalendarIcon className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold mb-1 text-foreground">Date sélectionnée</h3>
+                        <p className="text-foreground font-light">{format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr })}</p>
+                      </div>
+                    </div>
+                  )}
+                  {selectedTime && (
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Clock className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold mb-1 text-foreground">Heure sélectionnée</h3>
+                        <p className="text-foreground font-light text-lg">{selectedTime}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                {selectedDate && (
-                  <div className="flex items-center gap-3">
-                    <CalendarIcon className="h-5 w-5 text-primary" />
-                    <span>{format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr })}</span>
-                  </div>
-                )}
-                {selectedTime && (
-                  <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-primary" />
-                    <span>{selectedTime}</span>
-                  </div>
-                )}
-              </div>
-            </Card>
+              </Card>
+            </Reveal>
 
             {/* Center - Calendar */}
-            <Card className="bg-background/50 backdrop-blur-sm animate-fade-in-up p-6" style={{ animationDelay: '0.1s' }}>
-              <h3 className="text-lg font-medium mb-4 text-foreground">Sélectionnez une date</h3>
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
-                disabled={(date) => date < new Date() || date.getDay() === 0}
-                className="rounded-md border-0 pointer-events-auto"
-                locale={fr}
-              />
-            </Card>
+            <Reveal delay={0.2}>
+              <Card className="bg-background/60 backdrop-blur-md border border-border/50 p-6">
+                <h3 className="text-xl font-semibold mb-6 text-foreground">Sélectionnez une date</h3>
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  disabled={(date) => date < new Date() || date.getDay() === 0}
+                  className="rounded-md border-0 pointer-events-auto"
+                  locale={fr}
+                />
+              </Card>
+            </Reveal>
 
             {/* Right - Time Slots */}
-            <Card className="bg-background/50 backdrop-blur-sm animate-fade-in-up p-6" style={{ animationDelay: '0.2s' }}>
-              <h3 className="text-lg font-medium mb-4 text-foreground">Sélectionnez l'heure</h3>
-              <div className="grid grid-cols-2 gap-3 max-h-80 overflow-y-auto">
-                {timeSlots.map((time) => (
-                  <button
-                    key={time}
-                    onClick={() => setSelectedTime(time)}
-                    className={cn(
-                      "py-3 px-4 rounded-lg border text-sm font-medium transition-all",
-                      selectedTime === time
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-background/50 border-border hover:border-primary hover:text-primary text-foreground"
-                    )}
-                  >
-                    {time}
-                  </button>
-                ))}
-              </div>
-            </Card>
+            <Reveal delay={0.3}>
+              <Card className="bg-background/60 backdrop-blur-md border border-border/50 p-6">
+                <h3 className="text-xl font-semibold mb-6 text-foreground">Sélectionnez l'heure</h3>
+                <div className="grid grid-cols-2 gap-3 max-h-80 overflow-y-auto">
+                  {timeSlots.map((time) => (
+                    <button
+                      key={time}
+                      onClick={() => setSelectedTime(time)}
+                      className={cn(
+                        "py-3 px-4 rounded-lg border text-sm font-medium transition-all duration-300",
+                        selectedTime === time
+                          ? "bg-primary text-primary-foreground border-primary shadow-lg"
+                          : "bg-background/50 border-border/50 hover:border-primary/50 hover:text-primary text-foreground hover:bg-primary/5"
+                      )}
+                    >
+                      {time}
+                    </button>
+                  ))}
+                </div>
+              </Card>
+            </Reveal>
           </div>
 
           {/* Contact Form */}
-          <Card className="bg-background/50 backdrop-blur-sm animate-fade-in-up mt-8 p-8" style={{ animationDelay: '0.3s' }}>
-            <h3 className="text-xl font-medium mb-6 text-foreground">Vos informations</h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="guests" className="flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    Nombre de personnes
-                  </Label>
-                  <select
-                    id="guests"
-                    value={guests}
-                    onChange={(e) => setGuests(e.target.value)}
-                    className="w-full h-10 px-3 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                  >
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-                      <option key={num} value={num}>
-                        {num} {num === 1 ? 'personne' : 'personnes'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="name">Nom complet</Label>
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Votre nom"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="votre@email.com"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Téléphone</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+33 6 00 00 00 00"
-                    required
-                  />
-                </div>
+          <Reveal delay={0.4}>
+            <Card className="bg-background/60 backdrop-blur-md border border-border/50 p-8 lg:p-10">
+              <div className="mb-8">
+                <h3 className="text-2xl md:text-3xl font-serif mb-3 text-foreground">Vos informations</h3>
+                <p className="text-muted-foreground font-light">
+                  Remplissez vos coordonnées pour finaliser la réservation
+                </p>
               </div>
-              <div className="flex justify-end">
-                <Button type="submit" size="lg">
-                  Confirmer la réservation
-                </Button>
-              </div>
-            </form>
-          </Card>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="guests" className="flex items-center gap-2 text-foreground font-semibold">
+                      <Users className="h-4 w-4 text-primary" />
+                      Nombre de personnes
+                    </Label>
+                    <select
+                      id="guests"
+                      value={guests}
+                      onChange={(e) => setGuests(e.target.value)}
+                      className="w-full h-11 px-4 rounded-lg border border-border/50 bg-background/50 text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all backdrop-blur-sm"
+                    >
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                        <option key={num} value={num}>
+                          {num} {num === 1 ? 'personne' : 'personnes'}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-foreground font-semibold">
+                      Nom complet <span className="text-primary">*</span>
+                    </Label>
+                    <Input
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Votre nom"
+                      required
+                      className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground backdrop-blur-sm"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-foreground font-semibold">
+                      Email <span className="text-primary">*</span>
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="votre@email.com"
+                      required
+                      className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground backdrop-blur-sm"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-foreground font-semibold">
+                      Téléphone <span className="text-primary">*</span>
+                    </Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="0556482798"
+                      required
+                      className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground backdrop-blur-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">Format: 05, 06 ou 07 suivi de 8 chiffres</p>
+                  </div>
+                </div>
+                <div className="flex justify-end pt-4">
+                  <Button type="submit" size="lg" className="group">
+                    <CheckCircle2 className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Confirmer la réservation
+                  </Button>
+                </div>
+              </form>
+            </Card>
+          </Reveal>
         </div>
       </section>
     </AuroraBackground>

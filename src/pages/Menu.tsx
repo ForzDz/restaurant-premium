@@ -54,20 +54,34 @@ const menuCategories = [
 export default function Menu() {
   return (
     <AuroraBackground showRadialGradient={false}>
+      {/* Hero */}
+      <section className="section-padding pt-32 pb-16">
+        <div className="container-width text-center">
+          <Reveal width="100%">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif mb-6 text-foreground">
+              Notre Menu
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground font-light max-w-3xl mx-auto leading-relaxed">
+              Découvrez nos créations culinaires et nos spécialités préparées avec passion
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       {/* Special Dishes Section */}
-      <section className="section-padding pt-24">
+      <section className="section-padding">
         <div className="container-width">
           {/* Section Title */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <Reveal width="100%">
-              <h2 className="text-4xl md:text-5xl font-serif mb-4 text-foreground">Nos 3 Plats Spéciaux</h2>
-              <p className="text-muted-foreground font-light max-w-2xl mx-auto">
-                Découvrez nos créations signature préparées avec passion
+              <h2 className="text-4xl md:text-5xl font-serif mb-4 text-foreground">Nos Plats Spéciaux</h2>
+              <p className="text-muted-foreground font-light max-w-2xl mx-auto text-lg">
+                Découvrez nos créations signature préparées avec passion et savoir-faire
               </p>
             </Reveal>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             {[
               {
                 title: 'Petit Déjeuner Premium',
@@ -89,27 +103,28 @@ export default function Menu() {
               },
             ].map((dish, index) => (
               <Reveal key={index} delay={index * 0.15} className="h-full">
-                <Card className="overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl bg-card">
+                <Card className="overflow-hidden border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl bg-background/60 backdrop-blur-md group h-full">
                   {/* Image Container */}
-                  <div className="relative h-80 overflow-hidden group">
+                  <div className="relative h-80 overflow-hidden">
                     <img 
+                      loading="lazy" 
                       src={dish.image} 
                       alt={dish.title} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                     
                     {/* Rating Badge */}
-                    <div className="absolute top-4 right-4 bg-primary/90 backdrop-blur-sm text-primary-foreground px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                    <div className="absolute top-4 right-4 bg-primary/95 backdrop-blur-md text-primary-foreground px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg">
                       <Star className="h-4 w-4 fill-current" />
                       <span className="font-semibold text-sm">{dish.rating}</span>
                     </div>
                   </div>
 
                   {/* Content */}
-                  <div className="p-6 space-y-3">
+                  <div className="p-8 space-y-4">
                     <h3 className="text-2xl font-serif text-foreground font-semibold">{dish.title}</h3>
-                    <p className="text-muted-foreground font-light leading-relaxed">
+                    <p className="text-muted-foreground font-light leading-relaxed text-base">
                       {dish.description}
                     </p>
                   </div>
@@ -124,40 +139,40 @@ export default function Menu() {
       <section className="section-padding">
         <div className="container-width">
           {/* Section Title */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <Reveal width="100%">
-              <h2 className="text-4xl md:text-5xl font-serif mb-4 text-foreground">Notre Menu</h2>
-              <p className="text-muted-foreground font-light max-w-2xl mx-auto">
-                Nos plats et boissons avec leurs prix
+              <h2 className="text-4xl md:text-5xl font-serif mb-4 text-foreground">Menu Complet</h2>
+              <p className="text-muted-foreground font-light max-w-2xl mx-auto text-lg">
+                Découvrez tous nos plats et boissons avec leurs prix
               </p>
             </Reveal>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
             {menuCategories.map((category, categoryIndex) => (
-              <Reveal key={categoryIndex} delay={categoryIndex * 0.1}>
-                <div
-                  className="bg-gradient-to-br from-primary/10 via-primary/5 to-background/50 backdrop-blur-md rounded-2xl p-8 border border-primary/20 shadow-lg"
-                >
-                  <h2 className="text-2xl md:text-3xl font-medium mb-8 text-center text-foreground border-b border-primary/20 pb-4">
-                    {category.title}
-                  </h2>
-                  <div className="space-y-4">
-                    {category.items.map((item, itemIndex) => (
-                      <div
-                        key={itemIndex}
-                        className="flex justify-between items-baseline gap-4 group hover:bg-primary/5 rounded-lg px-3 py-2 transition-all duration-300"
-                      >
-                        <span className="text-foreground font-light flex-1">
-                          {item.name}
-                        </span>
-                        <span className="text-amber-500 font-medium whitespace-nowrap group-hover:text-amber-400 transition-colors">
-                          {item.price}
-                        </span>
-                      </div>
-                    ))}
+              <Reveal key={categoryIndex} delay={categoryIndex * 0.15}>
+                <Card className="bg-background/60 backdrop-blur-md border border-border/50 hover:border-primary/50 transition-all duration-300 h-full">
+                  <div className="p-8">
+                    <h2 className="text-2xl md:text-3xl font-serif mb-8 text-center text-foreground border-b border-primary/30 pb-4">
+                      {category.title}
+                    </h2>
+                    <div className="space-y-3">
+                      {category.items.map((item, itemIndex) => (
+                        <div
+                          key={itemIndex}
+                          className="flex justify-between items-baseline gap-4 group hover:bg-primary/5 rounded-lg px-4 py-3 transition-all duration-300 border border-transparent hover:border-primary/10"
+                        >
+                          <span className="text-foreground font-light flex-1 text-base">
+                            {item.name}
+                          </span>
+                          <span className="text-primary font-semibold whitespace-nowrap group-hover:text-primary/80 transition-colors">
+                            {item.price}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </Card>
               </Reveal>
             ))}
           </div>

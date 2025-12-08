@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MapPin, Star, CalendarCheck } from 'lucide-react';
+import { MapPin, Star, CalendarCheck, Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
@@ -60,6 +60,7 @@ export default function Home() {
               {/* Background Image & Overlay */}
               <div className="absolute inset-0 z-0">
                 <img 
+                  loading="lazy" 
                   src={reservationBg} 
                   alt="Reservation Table" 
                   className="w-full h-full object-cover"
@@ -172,7 +173,7 @@ export default function Home() {
         <div className="container-width">
           <div className="text-center mb-16">
             <Reveal width="100%">
-              <h2 className="text-4xl font-light mb-4 text-foreground">Avis Clients</h2>
+              <h2 className="text-4xl md:text-5xl font-serif mb-4 text-foreground">Avis Clients</h2>
               <p className="text-muted-foreground font-light">Ce que nos clients disent de nous</p>
             </Reveal>
           </div>
@@ -183,28 +184,60 @@ export default function Home() {
                 name: 'Marie Dupont',
                 comment: 'Une expérience exceptionnelle ! La qualité est au rendez-vous.',
                 rating: 5,
+                initial: 'MD',
               },
               {
                 name: 'Pierre Martin',
                 comment: 'Service impeccable et produits d\'une qualité remarquable.',
                 rating: 5,
+                initial: 'PM',
               },
               {
                 name: 'Sophie Bernard',
                 comment: 'Mon endroit préféré ! L\'ambiance est unique.',
                 rating: 5,
+                initial: 'SB',
               },
             ].map((testimonial, index) => (
               <Reveal key={index} delay={index * 0.1} className="h-full">
-                <Card className="h-full bg-background/50 backdrop-blur-sm">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground font-light mb-4 italic">"{testimonial.comment}"</p>
-                  <p className="font-medium text-foreground">{testimonial.name}</p>
-                </Card>
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="h-full group"
+                >
+                  <Card className="h-full bg-background/60 backdrop-blur-md border border-border/50 hover:border-primary/30 transition-all duration-300 p-8 relative overflow-hidden">
+                    {/* Subtle background gradient using theme colors */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    <div className="relative z-10">
+                      {/* Avatar */}
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/20 flex items-center justify-center text-lg font-semibold text-foreground">
+                          {testimonial.initial}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-foreground">{testimonial.name}</p>
+                          <div className="flex gap-1 mt-1">
+                            {[...Array(testimonial.rating)].map((_, i) => (
+                              <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Quote icon */}
+                      <Quote className="h-6 w-6 text-primary/40 mb-4" />
+
+                      {/* Comment */}
+                      <p className="text-muted-foreground font-light mb-6 italic leading-relaxed">
+                        "{testimonial.comment}"
+                      </p>
+
+                      {/* Decorative line */}
+                      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                    </div>
+                  </Card>
+                </motion.div>
               </Reveal>
             ))}
           </div>

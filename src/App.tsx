@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import Home from "./pages/Home";
 import Reservation from "./pages/Reservation";
 import Menu from "./pages/Menu";
@@ -23,23 +24,25 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-1">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/reservation" element={<Reservation />} />
-              <Route path="/menu" element={<Menu />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/thank-you" element={<ThankYou />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-          <WhatsAppFloat />
-          <ScrollToTop />
-        </div>
+        <SmoothScroll>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-1">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/reservation" element={<Reservation />} />
+                <Route path="/menu" element={<Menu />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/thank-you" element={<ThankYou />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+            <WhatsAppFloat />
+            <ScrollToTop />
+          </div>
+        </SmoothScroll>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -1,29 +1,58 @@
 import { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
 import { Button } from './Button';
+import { useLenis } from '@/contexts/LenisContext';
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const lenis = useLenis();
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
+      if (lenis) {
+        const scrollY = lenis.scroll;
+        if (scrollY > 300) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
       } else {
-        setIsVisible(false);
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        if (scrollY > 300) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
       }
     };
 
-    window.addEventListener('scroll', toggleVisibility);
+    // Écouter les événements de scroll avec Lenis
+    if (lenis) {
+      lenis.on('scroll', toggleVisibility);
+    } else {
+      window.addEventListener('scroll', toggleVisibility, { passive: true });
+    }
 
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, []);
+    toggleVisibility(); // Vérifier l'état initial
+
+    return () => {
+      if (lenis) {
+        lenis.off('scroll', toggleVisibility);
+      } else {
+        window.removeEventListener('scroll', toggleVisibility);
+      }
+    };
+  }, [lenis]);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: false });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
   };
 
   return (

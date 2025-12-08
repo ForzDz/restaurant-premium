@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Lightbox } from '@/components/Lightbox';
 import { AuroraBackground } from '@/components/ui/aurora-background';
+import { Reveal } from '@/components/Reveal';
+import { Image as ImageIcon } from 'lucide-react';
 import product1 from '@/assets/product-1.jpg';
 import product2 from '@/assets/product-2.jpg';
 import product3 from '@/assets/product-3.jpg';
@@ -43,37 +45,46 @@ export default function Gallery() {
   return (
     <AuroraBackground showRadialGradient={false}>
       {/* Hero */}
-      <section className="section-padding pt-24">
-        <div className="container-width text-center animate-fade-in">
-          <h1 className="text-5xl md:text-6xl font-light mb-6 text-foreground">Galerie</h1>
-          <p className="text-xl text-muted-foreground font-light max-w-3xl mx-auto">
-            Plongez dans l'univers Premium à travers nos images
-          </p>
+      <section className="section-padding pt-32 pb-16">
+        <div className="container-width text-center">
+          <Reveal width="100%">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif mb-6 text-foreground">
+              Galerie
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground font-light max-w-3xl mx-auto leading-relaxed">
+              Plongez dans l'univers Premium à travers nos images et découvrez notre ambiance unique
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* Gallery Grid */}
       <section className="section-padding">
         <div className="container-width">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {galleryImages.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => openLightbox(index)}
-                className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all animate-scale-in"
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                <img
-                  src={image}
-                  alt={`Gallery ${index + 1}`}
-                  className="w-full h-80 object-cover transition-transform group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                  <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-light">
-                    Voir l'image
-                  </span>
-                </div>
-              </button>
+              <Reveal key={index} delay={index * 0.1}>
+                <button
+                  onClick={() => openLightbox(index)}
+                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 w-full aspect-[4/3]"
+                >
+                  <img
+                    loading="lazy"
+                    src={image}
+                    alt={`Gallery ${index + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="flex items-center gap-3 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <ImageIcon className="h-6 w-6" />
+                      <span className="font-light text-lg">Voir l'image</span>
+                    </div>
+                  </div>
+                  <div className="absolute top-4 right-4 bg-primary/90 backdrop-blur-md text-primary-foreground px-3 py-1.5 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    #{index + 1}
+                  </div>
+                </button>
+              </Reveal>
             ))}
           </div>
         </div>
