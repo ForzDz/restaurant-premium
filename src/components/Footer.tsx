@@ -10,7 +10,7 @@ export function Footer() {
       <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none" />
       
       <div className="container-width px-6 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           {/* Brand */}
           <div>
             <h3 className="text-2xl font-serif mb-4 text-foreground">Premium & Coffee</h3>
@@ -128,24 +128,7 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Opening Hours */}
-          <div>
-            <h4 className="font-semibold mb-6 text-foreground uppercase tracking-wider text-sm">Horaires</h4>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Clock className="h-5 w-5 text-primary flex-shrink-0" />
-                <div>
-                  <p className="text-sm text-foreground font-light">Tous les jours</p>
-                  <p className="text-xs text-muted-foreground font-light">Service continu</p>
-                </div>
-              </div>
-              <div className="pt-2">
-                <p className="text-xs text-muted-foreground font-light leading-relaxed">
-                  Réservez votre table pour une expérience d'exception
-                </p>
-              </div>
-            </div>
-          </div>
+
         </div>
 
         {/* Bottom Bar */}

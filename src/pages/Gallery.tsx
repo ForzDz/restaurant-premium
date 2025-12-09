@@ -24,6 +24,7 @@ const galleryImages = [
 export default function Gallery() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showAll, setShowAll] = useState(false);
 
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index);
@@ -62,10 +63,16 @@ export default function Gallery() {
       <section className="section-padding">
         <div className="container-width">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {galleryImages.map((image, index) => (
+            {(showAll ? galleryImages : galleryImages.slice(0, 6)).map((image, index) => (
               <Reveal key={index} delay={index * 0.1}>
                 <button
-                  onClick={() => openLightbox(index)}
+                  onClick={() => {
+                    if (!showAll && index === 5) {
+                      setShowAll(true);
+                    } else {
+                      openLightbox(index);
+                    }
+                  }}
                   className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 w-full aspect-[4/3]"
                 >
                   <img
@@ -74,12 +81,22 @@ export default function Gallery() {
                     alt={`Gallery ${index + 1}`}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="flex items-center gap-3 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <ImageIcon className="h-6 w-6" />
-                      <span className="font-light text-lg">Voir l'image</span>
-                    </div>
+                  
+                  {/* Overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-300 flex items-center justify-center ${(!showAll && index === 5) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                    {(!showAll && index === 5) ? (
+                      <div className="absolute bottom-6 right-6 flex items-center gap-2 text-white animate-pulse">
+                        <span className="font-medium text-lg border-b border-white/50 pb-0.5">Voir toute la galerie</span>
+                        <ImageIcon className="h-5 w-5" />
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <ImageIcon className="h-6 w-6" />
+                        <span className="font-light text-lg">Voir l'image</span>
+                      </div>
+                    )}
                   </div>
+
                   <div className="absolute top-4 right-4 bg-primary/90 backdrop-blur-md text-primary-foreground px-3 py-1.5 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     #{index + 1}
                   </div>

@@ -39,7 +39,7 @@ export default function Contact() {
               </Reveal>
               
               <div className="space-y-4">
-                <Reveal delay={0.1}>
+                <Reveal delay={0.1} width="100%">
                   <Card className="group hover:border-primary/50 transition-all duration-300 bg-background/60 backdrop-blur-md border border-border/50 p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
@@ -61,7 +61,7 @@ export default function Contact() {
                   </Card>
                 </Reveal>
 
-                <Reveal delay={0.2}>
+                <Reveal delay={0.2} width="100%">
                   <Card className="group hover:border-primary/50 transition-all duration-300 bg-background/60 backdrop-blur-md border border-border/50 p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
@@ -81,7 +81,7 @@ export default function Contact() {
                   </Card>
                 </Reveal>
 
-                <Reveal delay={0.3}>
+                <Reveal delay={0.3} width="100%">
                   <Card className="group hover:border-primary/50 transition-all duration-300 bg-background/60 backdrop-blur-md border border-border/50 p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
@@ -101,7 +101,7 @@ export default function Contact() {
                   </Card>
                 </Reveal>
 
-                <Reveal delay={0.4}>
+                <Reveal delay={0.4} width="100%">
                   <Card className="group hover:border-primary/50 transition-all duration-300 bg-background/60 backdrop-blur-md border border-border/50 p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
@@ -266,6 +266,11 @@ export default function Contact() {
                       type="tel"
                       id="phone"
                       name="phone"
+                      maxLength={10}
+                      pattern="^(05|06|07)[0-9]{8}$"
+                      onInput={(e) => {
+                        e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '').slice(0, 10);
+                      }}
                       className="w-full px-4 py-3 rounded-lg border border-border/50 bg-background/50 text-foreground focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-muted-foreground backdrop-blur-sm"
                       placeholder="0556482798"
                     />

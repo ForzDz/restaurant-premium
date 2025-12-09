@@ -32,10 +32,10 @@ export function Lightbox({ images, currentIndex, onClose, onPrevious, onNext }: 
       {/* Close Button */}
       <button
         onClick={onClose}
-        className="fixed top-4 right-4 z-[60] p-3 md:p-2 text-white bg-black/50 hover:bg-black/70 rounded-full md:rounded-lg border border-white/20 transition-all h-12 w-12 md:h-auto md:w-auto flex items-center justify-center shadow-lg"
+        className="fixed top-6 right-6 md:top-8 md:right-8 z-[60] p-3 text-white bg-black/60 hover:bg-black/80 rounded-full border border-white/30 hover:border-white/60 transition-all shadow-lg hover:scale-110"
         aria-label="Fermer"
       >
-        <X className="h-6 w-6" />
+        <X className="h-6 w-6 md:h-8 md:w-8" />
       </button>
 
       {/* Previous Button */}
